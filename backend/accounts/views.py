@@ -59,7 +59,7 @@ class UploadCSV(APIView):
 # get All Account 
 class AccountListView(APIView):
     def get(self,request):
-        accounts = Account.objects.all().order_by('timestamp')    
+        accounts = Account.objects.all().order_by('-timestamp')    
         paginator = PageNumberPagination()
         paginator.page_size = 20
         paginated_accouts = paginator.paginate_queryset(accounts,request)
@@ -70,7 +70,7 @@ class AccountListView(APIView):
 # get All Account not pagination for select
 class AccountListViewForSelect(APIView):
     def get(self,request):
-          accounts = Account.objects.all().values('id', 'name').order_by('timestamp')
+          accounts = Account.objects.all().values('id', 'name').order_by('-timestamp')
           serializer = AccountSerializersForSelect(accounts, many=True)
           return Response({'results':serializer.data},status=status.HTTP_200_OK)
         
@@ -118,7 +118,7 @@ class CreateTransfer(APIView):
 # get all Transfers
 class TransfersListView(APIView):
     def get(self,request):
-        transfers = Transaction.objects.all().order_by('timestamp')   
+        transfers = Transaction.objects.all().order_by('-timestamp')   
         paginator = PageNumberPagination()
         paginator.page_size = 20
         paginated_transfers = paginator.paginate_queryset(transfers,request)

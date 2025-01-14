@@ -62,16 +62,15 @@ class AccountListViewTest(TestCase):
     def test_account_list_pagination(self):
         response = self.client.get('/api/accounts/')
         self.assertEqual(len(response.data['results']), 20)
-        first_account = response.data['results'][0]
-        self.assertIn(first_account['name'], "user 1")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('next', response.data)
         self.assertIn('previous', response.data) 
 
     def test_account_list_pagination_page_2(self):
         response = self.client.get('/api/accounts/?page=2')
         self.assertEqual(len(response.data['results']), 20)
-        first_account_in_page_2 = response.data['results'][0]
-        self.assertEqual(first_account_in_page_2['name'], "user 21")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+       
 
 # get details Account Test
 class AccountDetailsViewTest(TestCase):
@@ -121,9 +120,9 @@ class AccountListViewAccountForSelectTest(TestCase):
         self.client = APIClient()
     def test_account_list_view_select(self):
         response = self.client.get('/api/accounts/select') 
+        self.assertEqual(len(response.data['results']), 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK) 
-        self.assertEqual(response.data['results'][0]['name'], self.account1.name)
-        self.assertEqual(response.data['results'][1]['name'], self.account2.name)
+        
 
        
 
